@@ -21,7 +21,6 @@ jobs:
 #       with:
 #         java-version: '11'
 #         distribution: 'adopt'
-    - name: Mount bazel cache  # Optional
     - uses: actions/cache@v2
       with:
         path: "~/.cache/bazel"
