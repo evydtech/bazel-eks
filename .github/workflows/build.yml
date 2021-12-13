@@ -1,0 +1,60 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# Successful docker hub build and push
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - run: bazel build //:ProjectRunner
+
+
+#     - name: Login to Docker Hub
+#       uses: docker/login-action@v1
+#       with:
+#         username: codesparrow
+#         password: ${{ secrets.DOCKERHUB_TOKEN }}
+#     -
+#       name: Set up Docker Build
+#       uses: docker/setup-buildx-action@v1
+#     -
+#       name: Build and push
+#       uses: docker/build-push-action@v2
+#       with:
+#         context: .
+#         file: ./dockerfile
+#         push: true
+#         tags: codesparrow/my-react-app:latest
+
+#     - name: Azure build and push 
+#       uses: azure/docker-login@v1
+#       with:
+#         login-server: vishesh.azurecr.io
+#         username: ${{ secrets.ACR_USERNAME }}
+#         password: ${{ secrets.ACR_PASSWORD }}
+
+#     - run: docker build . -t vishesh.azurecr.io/my-react-app:${{ github.sha }}
+    
+#     - name: Container Scanning
+#       uses: Azure/container-scan@v0
+#       with:
+#         image-name: vishesh.azurecr.io/my-react-app:${{ github.sha }}
+        
+#     - name: ACR push 
+#       run: docker push vishesh.azurecr.io/my-react-app:${{ github.sha }}
