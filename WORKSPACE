@@ -23,7 +23,7 @@ docker_toolchain_configure(
   # OPTIONAL: Path to a directory which has a custom docker client config.json.
   # See https://docs.docker.com/engine/reference/commandline/cli/#configuration-files
   # for more details.
-  client_config="~/.docker/config.json",
+  client_config="/etc/docker/daemon.json",
   # OPTIONAL: Path to the docker binary.
   # Should be set explicitly for remote execution.
   docker_path="/usr/bin/docker",
