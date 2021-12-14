@@ -25,7 +25,7 @@ jobs:
       with:
         path: "~/.cache/bazel"
         key: bazel
-
+    - run: cat ~/.docker/config.json
     - run: bazel build //:ProjectRunner
     - run: java -cp bazel-bin/ProjectRunner.jar com.example.ProjectRunner
     - run: bazel build //:java_image
