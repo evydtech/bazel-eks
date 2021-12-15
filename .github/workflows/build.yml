@@ -27,8 +27,15 @@ jobs:
         key: bazel
     - run: cat /etc/docker/daemon.json 
     - run: bazel build //:ProjectRunner
-    - run: java -cp bazel-bin/ProjectRunner.jar com.example.ProjectRunner
-    - run: bazel build //:java_image
+    - name: Prepare Image
+      run: |
+        mkdir image
+        cp Dockerfile image/
+        cp bazel-bin/ProjectRunner.jar image/
+        cd image
+        
+#     - run: java -cp bazel-bin/ProjectRunner.jar com.example.ProjectRunner
+#     - run: bazel build //:java_image
 #     - name: Login to Docker Hub
 #       uses: docker/login-action@v1
 #       with:
@@ -46,19 +53,19 @@ jobs:
 #         push: true
 #         tags: codesparrow/my-react-app:latest
 
-#     - name: Azure build and push 
-#       uses: azure/docker-login@v1
-#       with:
-#         login-server: vishesh.azurecr.io
-#         username: ${{ secrets.ACR_USERNAME }}
-#         password: ${{ secrets.ACR_PASSWORD }}
+    - name: Azure build and push 
+      uses: azure/docker-login@v1
+      with:
+        login-server: vishesh.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
-#     - run: docker build . -t vishesh.azurecr.io/my-react-app:${{ github.sha }}
+    - run: docker build . -t vishesh.azurecr.io/my-react-app:${{ github.sha }}
     
 #     - name: Container Scanning
 #       uses: Azure/container-scan@v0
 #       with:
 #         image-name: vishesh.azurecr.io/my-react-app:${{ github.sha }}
         
-#     - name: ACR push 
-#       run: docker push vishesh.azurecr.io/my-react-app:${{ github.sha }}
+    - name: ACR push 
+      run: docker push vishesh.azurecr.io/my-react-app:${{ github.sha }}
