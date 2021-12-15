@@ -25,7 +25,7 @@ jobs:
       with:
         path: "~/.cache/bazel"
         key: bazel
-    - run: cat /etc/docker/daemon.json 
+#     - run: bazel build //:...
     - run: bazel build //:ProjectRunner
     - name: Prepare Image
       run: |
