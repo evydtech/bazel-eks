@@ -1,6 +1,6 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-# Successful docker hub build and push
+
 name: Bazel-Build
 
 on:
@@ -60,12 +60,12 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
-    - run: docker build . -t vishesh.azurecr.io/my-react-app:${{ github.sha }}
+    - run: docker build . -t vishesh.azurecr.io/bazel-java:${{ github.sha }}
     
-#     - name: Container Scanning
-#       uses: Azure/container-scan@v0
-#       with:
-#         image-name: vishesh.azurecr.io/my-react-app:${{ github.sha }}
+    - name: Container Scanning
+      uses: Azure/container-scan@v0
+      with:
+        image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
         
     - name: ACR push 
-      run: docker push vishesh.azurecr.io/my-react-app:${{ github.sha }}
+      run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
