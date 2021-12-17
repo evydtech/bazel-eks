@@ -67,7 +67,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 #    ssh_key {
 #      key_data = file(var.ssh_public_key)
 #    }
-#  }
+  }
 
   default_node_pool {
     name       = "agentpool"
