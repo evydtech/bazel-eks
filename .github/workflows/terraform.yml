@@ -18,7 +18,7 @@ jobs:
       TF_VAR_client_secret: ${{ secrets.TF_VAR_client_secret }}
 
     runs-on: ubuntu-latest
- 
+      - run: terraform version
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
@@ -64,3 +64,4 @@ jobs:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'applya'
         tf_actions_working_dir: "./terraform"
+
