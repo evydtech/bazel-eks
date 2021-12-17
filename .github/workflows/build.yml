@@ -62,10 +62,10 @@ jobs:
 
     - run: docker build . -t vishesh.azurecr.io/bazel-java:${{ github.sha }}
     
-    - name: Container Scanning
-      uses: Azure/container-scan@v0
-      with:
-        image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
+      #    - name: Container Scanning
+      #uses: Azure/container-scan@v0
+      #with:
+      #  image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
         
     - name: ACR push 
       run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
