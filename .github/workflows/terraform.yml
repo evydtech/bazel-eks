@@ -28,7 +28,7 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-    - run: ls -ltr
+    - run: cd Infrastructure/Kubernetes/
     - name: 'Terraform Format'
       uses: hashicorp/terraform-github-actions@master
       with:
