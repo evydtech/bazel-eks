@@ -73,8 +73,8 @@ jobs:
         tf_actions_working_dir: "./Infrastructure/Kubernetes/"
 
     - run: >
-      echo "$(terraform output -raw kube_config)" > ./azurek8s
-      export KUBECONFIG=./azurek8s
-      kubectl get nodes
-      kubectl delete deployment java-app
-      kubectl create deployment java-app --image=vishesh.azurecr.io/bazel-java
+        echo "$(terraform output -raw kube_config)" > ./azurek8s
+        export KUBECONFIG=./azurek8s
+        kubectl get nodes
+        kubectl delete deployment java-app
+        kubectl create deployment java-app --image=vishesh.azurecr.io/bazel-java
