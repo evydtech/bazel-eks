@@ -5,7 +5,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
- 
+
 jobs:
   terraform:
     name: 'Terraform'
@@ -80,11 +80,11 @@ jobs:
 
 
   # Create image pull secret for ACR
-  - uses: azure/k8s-create-secret@v1
-    with:
-      container-registry-url: vishesh.azurecr.io
-      container-registry-username: ${{ secrets.ACR_USERNAME }}
-      container-registry-password: ${{ secrets.ACR_PASSWORD }}
-      secret-name: ${{ env.SECRET }}
-      namespace: ${{ env.NAMESPACE }}
-      arguments: --force true
+  # - uses: azure/k8s-create-secret@v1
+  #   with:
+  #     container-registry-url: vishesh.azurecr.io
+  #     container-registry-username: ${{ secrets.ACR_USERNAME }}
+  #     container-registry-password: ${{ secrets.ACR_PASSWORD }}
+  #     secret-name: ${{ env.SECRET }}
+  #     namespace: ${{ env.NAMESPACE }}
+  #     arguments: --force true
