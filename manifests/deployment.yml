@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-deployment
+  labels:
+    app: bazel-java
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bazel-java
+  template:
+    metadata:
+      labels:
+        app: bazel-java
+    spec:
+      containers:
+      - name: bazel-java
+        image: vishesh.azurecr.io/bazel-java
+        ports:
+        - containerPort: 80
