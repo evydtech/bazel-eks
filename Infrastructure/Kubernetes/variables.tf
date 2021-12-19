@@ -5,7 +5,7 @@ variable "agent_count" {
   default = 1
 }
 
-variable "ssh_public_key" {}
+variable "VM_SSH_KEY_PUB" {}
 
 variable "dns_prefix" {
   default = "k8stest"
