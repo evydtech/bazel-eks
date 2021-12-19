@@ -68,11 +68,10 @@ jobs:
         login-server: vishesh.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-
-    - run: ls -ltr
       working-directory: ./image
+    - run: ls -ltr
     - run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
-    
+    - run: ls -ltr
       #    - name: Container Scanning
       #uses: Azure/container-scan@v0
       #with:
