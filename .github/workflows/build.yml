@@ -70,6 +70,7 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     - run: ls -ltr
+      working-directory: ./image
     - run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
     
       #    - name: Container Scanning
@@ -77,7 +78,8 @@ jobs:
       #with:
       #  image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
         
-    - name: ACR push 
+    - name: ACR push
+      working-directory: ./image 
       run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
 
 
