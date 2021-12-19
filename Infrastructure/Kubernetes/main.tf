@@ -12,7 +12,7 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "azure-k8stest"
+    resource_group_name  = "cloud-shell-storage-southeastasia"
     storage_account_name = "cs1100320003dd472e1"
     container_name       = "tfstate"
     key                  = "codelab.microsoft.tfstate"
