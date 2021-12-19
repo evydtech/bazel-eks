@@ -46,9 +46,9 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: "./Infrastructure/Kubernetes/"
 
-    - name: import
-      working-directory: ./Infrastructure/Kubernetes/
-      run: terraform import azurerm_resource_group.rg /subscriptions/494604d0-3f65-44e8-a639-800587302c01/resourceGroups/azure-k8stest
+    # - name: import
+    #   working-directory: ./Infrastructure/Kubernetes/
+    #   run: terraform import azurerm_resource_group.rg /subscriptions/494604d0-3f65-44e8-a639-800587302c01/resourceGroups/azure-k8stest
  
     - name: 'Terraform Validate'
       uses: hashicorp/terraform-github-actions@master
