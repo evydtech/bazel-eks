@@ -62,13 +62,13 @@ jobs:
 #         push: true
 #         tags: codesparrow/my-react-app:latest
 
-    - name: Azure build and push 
+    - name: Azure build and push
+      working-directory: ./image 
       uses: azure/docker-login@v1
       with:
         login-server: vishesh.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-      working-directory: ./image
     - run: ls -ltr
     - run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
     - run: ls -ltr
