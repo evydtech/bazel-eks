@@ -20,7 +20,7 @@ terraform {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "k8s-dev-rg"
+  name     = "azure-k8stest"
   location = "Southeast Asia"
 }
 
