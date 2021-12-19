@@ -77,12 +77,12 @@ jobs:
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: "./Infrastructure/Kubernetes/"
 
-    - run: cd ./Infrastructure/Kubernetes/
-    - run: echo "$(terraform output -raw kube_config)" > ~/azurek8s; export KUBECONFIG=~/azurek8s
-    - run: wc ~/azurek8s
-    - run: kubectl get nodes
-    - run: kubectl delete deployment java-app
-    - run: kubectl create deployment java-app --image=vishesh.azurecr.io/bazel-java
+    # - run: cd ./Infrastructure/Kubernetes/
+    # - run: echo "$(terraform output -raw kube_config)" > ~/azurek8s; export KUBECONFIG=~/azurek8s
+    # - run: wc ~/azurek8s
+    # - run: kubectl get nodes
+    # - run: kubectl delete deployment java-app
+    # - run: kubectl create deployment java-app --image=vishesh.azurecr.io/bazel-java
 
 
   # Create image pull secret for ACR
