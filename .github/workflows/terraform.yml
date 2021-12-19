@@ -74,6 +74,7 @@ jobs:
 
     - run: cd ./Infrastructure/Kubernetes/
     - run: echo "$(terraform output -raw kube_config)" > ~/azurek8s; export KUBECONFIG=~/azurek8s
+    - run: wc ~/azurek8s
     - run: kubectl get nodes
     - run: kubectl delete deployment java-app
     - run: kubectl create deployment java-app --image=vishesh.azurecr.io/bazel-java

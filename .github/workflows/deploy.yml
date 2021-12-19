@@ -5,7 +5,7 @@ on: [push]
 env:
   REGISTRY_NAME: "vishesh"
   CLUSTER_NAME: "k8stest"
-  CLUSTER_RESOURCE_GROUP: "k8s-dev-rg"
+  CLUSTER_RESOURCE_GROUP: "azure-k8stest"
   NAMESPACE: "default"
   APP_NAME: "bazel-java"
   SECRET: "az-secret"
