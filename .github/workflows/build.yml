@@ -74,7 +74,7 @@ jobs:
 
     # Delete deployment
     - name: clean previous deployment (if any)
-    - run: kubectl delete -f manifests/job.yml | true
+      run: kubectl delete -f manifests/job.yml | true
     
     # Create image pull secret for ACR
     - name: Azure K8s Secret
