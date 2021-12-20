@@ -30,12 +30,6 @@ jobs:
 #         java-version: '11'
 #         distribution: 'adopt'
 
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
     - uses: actions/cache@v2
       with:
         path: "~/.cache/bazel"
@@ -49,6 +43,11 @@ jobs:
         cp bazel-bin/ProjectRunner.jar image/
         cd image
         
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     # - run: java -cp ProjectRunner.jar com.example.ProjectRunner
     # - run: ls -ltr
 #     - run: bazel build //:java_image
