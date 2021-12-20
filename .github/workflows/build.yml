@@ -32,8 +32,14 @@ jobs:
     - uses: actions/cache@v2
       with:
         path: "~/.cache/bazel"
+        key: bazel
+#     - run: bazel build //:...
+    - run: bazel build //:ProjectRunner
+    - name: Prepare Image
+      run: |
+        mkdir image
+        cp Dockerfile image/
         cp bazel-bin/ProjectRunner.jar image/
-        
 
     - name: Azure Container Registry Auth
       uses: azure/docker-login@v1
