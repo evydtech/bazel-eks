@@ -18,86 +18,87 @@ env:
   SECRET: "az-secret"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  - build:
+      runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: "~/.cache/bazel"
-        key: bazel
-#     - run: bazel build //:...
-    - run: bazel build //:ProjectRunner
-    - name: Prepare Image
-      run: |
-        mkdir image
-        cp Dockerfile image/
-        cp bazel-bin/ProjectRunner.jar image/
-        cd image
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
+  #     - run: bazel build //:...
+      - run: bazel build //:ProjectRunner
+      - name: Prepare Image
+        run: |
+          mkdir image
+          cp Dockerfile image/
+          cp bazel-bin/ProjectRunner.jar image/
 
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-    - name: Azure Container Registry Auth
-      uses: azure/docker-login@v1
-      with:
-        login-server: vishesh.azurecr.io
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
- 
-    # - run: ls -ltr
-      #    - name: Container Scanning
-      #uses: Azure/container-scan@v0
-      #with:
-      #  image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
-        
-    - name: Azure build and push
-      working-directory: ./image
-      run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
-      run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
+      - name: Azure Container Registry Auth
+        uses: azure/docker-login@v1
+        with:
+          login-server: vishesh.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+  
+      # - run: ls -ltr
+        #    - name: Container Scanning
+        #uses: Azure/container-scan@v0
+        #with:
+        #  image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
+          
+      - name: Azure build and push
+        working-directory: ./image
+        run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
+        run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
 
 
-    # Set the target Azure Kubernetes Service (AKS) cluster.
-    - name: Azure K8s Auth 
-      uses: azure/aks-set-context@v1
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{ env.CLUSTER_NAME }}
-        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
-    
-    # Create namespace if doesn't exist
-    # - run: |
-    #     kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+      # Set the target Azure Kubernetes Service (AKS) cluster.
+      - name: Azure K8s Auth 
+        uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+      
+      # Create namespace if doesn't exist
+      # - run: |
+      #     kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
 
-    # Delete deployment
-    - name: clean previous deployment (if any)
-    - run: kubectl delete -f manifests/job.yml | true
-    
-    # Create image pull secret for ACR
-    - name: Azure K8s Secret
-      uses: azure/k8s-create-secret@v1
-      with:
-        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
-        container-registry-username: ${{ secrets.ACR_USERNAME }}
-        container-registry-password: ${{ secrets.ACR_PASSWORD }}
-        secret-name: ${{ env.SECRET }}
-        namespace: ${{ env.NAMESPACE }}
-        # force: true
-    
-    # Deploy app to AKS
-    - name: Azure K8s Deploy
-      uses: azure/k8s-deploy@v1
-      with:
-        manifests: |
-          manifests/job.yml
-        images: |
-          ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-        imagepullsecrets: |
-          ${{ env.SECRET }}
-        namespace: ${{ env.NAMESPACE }}
+      # Delete deployment
+      - name: clean previous deployment (if any)
+      - run: kubectl delete -f manifests/job.yml | true
+      
+      # Create image pull secret for ACR
+      - name: Azure K8s Secret
+        uses: azure/k8s-create-secret@v1
+        with:
+          container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+          container-registry-username: ${{ secrets.ACR_USERNAME }}
+          container-registry-password: ${{ secrets.ACR_PASSWORD }}
+          secret-name: ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}
+          # force: true
+      
+      # Deploy app to AKS
+      - name: Azure K8s Deploy
+        uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            manifests/job.yml
+          images: |
+            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          imagepullsecrets: |
+            ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}
 
+  - scan:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
