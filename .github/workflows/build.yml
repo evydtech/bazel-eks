@@ -23,7 +23,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    # - uses: actions/cache@v2
+    - uses: actions/cache@v2
       with:
         path: "~/.cache/bazel"
         key: bazel
@@ -93,12 +93,12 @@ jobs:
           ${{ env.SECRET }}
         namespace: ${{ env.NAMESPACE }}
 
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # scan:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: SonarCloud Scan
+  #     uses: SonarSource/sonarcloud-github-action@master
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
