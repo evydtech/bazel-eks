@@ -58,8 +58,6 @@ jobs:
       working-directory: ./image
       run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
 
-
-
     - name: Azure Push 
       working-directory: ./image
       run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
