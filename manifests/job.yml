@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bazel-java
+spec:
+  template:
+    spec:
+      containers:
+      - name: bazel-java
+        image: vishesh.azurecr.io/bazel-java
+      restartPolicy: Never
+  backoffLimit: 3
