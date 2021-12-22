@@ -52,7 +52,7 @@ jobs:
     - name: Container Scanning
       uses: Azure/container-scan@v0
       with:
-       image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
+       image-name: ${{ secrets.ACR_USERNAME }}.azurecr.io/bazel-java:${{ github.sha }}
         
     - name: Azure build 
       working-directory: ./image
