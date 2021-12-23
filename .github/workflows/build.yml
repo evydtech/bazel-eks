@@ -61,8 +61,10 @@ jobs:
       uses: Azure/container-scan@v0
       with:
        image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
-      run: echo $scan-report-path
-      run: echo {{ $env.scan-report-path }}
+
+    - name: CIS Results
+      if: always()
+      run: echo $scan-report-path; echo {{ $env.scan-report-path }}
       
     # Set the target Azure Kubernetes Service (AKS) cluster.
     - name: Azure K8s Auth 
