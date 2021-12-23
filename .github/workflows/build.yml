@@ -72,7 +72,7 @@ jobs:
         connection-string: ${{ secrets.AZ_APPINSIGHTS_CONNECTION_STRING }}
         subscription-token: ${{ secrets.AZ_SUBSCRIPTION_TOKEN }} 
         
-    - name: CIS Results
+    # - name: CIS Results
       # run: echo ${{ steps.container-scan.outputs.scan-report-path }}
       # run: cat /home/runner/work/bazel-java/bazel-java/_temp/containerscan_1640251153114/scanreport.json
 
