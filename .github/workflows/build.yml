@@ -16,6 +16,7 @@ env:
   NAMESPACE: "default"
   APP_NAME: "bazel-java"
   SECRET: "az-secret"
+  scan-report-path: '/tmp/report'
 
 jobs:
   build:
