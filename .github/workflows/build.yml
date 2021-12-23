@@ -62,10 +62,18 @@ jobs:
       with:
        image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
 
-    - name: CIS Results
-      if: always()
-      run: echo $scan-report-path; echo {{ $env.scan-report-path }}
-      
+    # - name: CIS Results
+    #   if: always()
+    #   run: echo $scan-report-path; echo {{ $env.scan-report-path }}
+    
+    - name: Post logs to appinsights
+      uses: Azure/publish-security-assessments@v0
+      with: 
+        scan-results-path: ${{ steps.container-scan.outputs.scan-report-path }}
+        connection-string: ${{ secrets.AZ_APPINSIGHTS_CONNECTION_STRING }}
+        subscription-token: ${{ secrets.AZ_SUBSCRIPTION_TOKEN }} 
+        
+
     # Set the target Azure Kubernetes Service (AKS) cluster.
     - name: Azure K8s Auth 
       uses: azure/aks-set-context@v1
