@@ -67,6 +67,7 @@ jobs:
 
     - name: CIS Results
       run: echo ${{ steps.container-scan.outputs.scan-report-path }}
+      run: cat /home/runner/work/bazel-java/bazel-java/_temp/containerscan_1640251153114/scanreport.json
     
     - name: Post logs to appinsights
       uses: Azure/publish-security-assessments@v0
