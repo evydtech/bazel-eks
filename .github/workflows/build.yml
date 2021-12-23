@@ -74,7 +74,7 @@ jobs:
         
     - name: CIS Results
       # run: echo ${{ steps.container-scan.outputs.scan-report-path }}
-      run: cat /home/runner/work/bazel-java/bazel-java/_temp/containerscan_1640251153114/scanreport.json
+      # run: cat /home/runner/work/bazel-java/bazel-java/_temp/containerscan_1640251153114/scanreport.json
 
     # Set the target Azure Kubernetes Service (AKS) cluster.
     - name: Azure K8s Auth 
