@@ -10,9 +10,9 @@ on:
     branches: [ master ]
 
 env:
-  REGISTRY_NAME: "vishesh"
-  CLUSTER_NAME: "k8stest"
-  CLUSTER_RESOURCE_GROUP: "azure-k8stest"
+  REGISTRY_NAME: "evydinternalacr"
+  CLUSTER_NAME: "aks-dev"
+  CLUSTER_RESOURCE_GROUP: "evyd-dev-aks"
   NAMESPACE: "default"
   APP_NAME: "bazel-java"
   SECRET: "az-secret"
@@ -37,41 +37,41 @@ jobs:
         cp Dockerfile image/
         cp bazel-bin/ProjectRunner.jar image/
 
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    # - name: SonarCloud Scan
+    #   uses: SonarSource/sonarcloud-github-action@master
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
     - name: Azure Container Registry Auth
       uses: azure/docker-login@v1
       with:
-        login-server: vishesh.azurecr.io
+        login-server: evydinternalacr.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
       
     - name: Azure build 
       working-directory: ./image
-      run: docker build -t vishesh.azurecr.io/bazel-java:${{ github.sha }} .
+      run: docker build -t evydinternalacr.azurecr.io/bazel-java:${{ github.sha }} .
 
     - name: Container Scanning
       uses: Azure/container-scan@v0
       id: container-scan
       continue-on-error: true
       with:
-       image-name: vishesh.azurecr.io/bazel-java:${{ github.sha }}
+       image-name: evydinternalacr.azurecr.io/bazel-java:${{ github.sha }}
 
     - name: Azure Push 
       working-directory: ./image
-      run: docker push vishesh.azurecr.io/bazel-java:${{ github.sha }}
+      run: docker push evydinternalacr.azurecr.io/bazel-java:${{ github.sha }}
    
-    - name: Post logs to appinsights
-      uses: Azure/publish-security-assessments@v0
-      with: 
-        scan-results-path: ${{ steps.container-scan.outputs.scan-report-path }}
-        connection-string: ${{ secrets.AZ_APPINSIGHTS_CONNECTION_STRING }}
-        subscription-token: ${{ secrets.AZ_SUBSCRIPTION_TOKEN }} 
+    # - name: Post logs to appinsights
+    #   uses: Azure/publish-security-assessments@v0
+    #   with: 
+    #     scan-results-path: ${{ steps.container-scan.outputs.scan-report-path }}
+    #     connection-string: ${{ secrets.AZ_APPINSIGHTS_CONNECTION_STRING }}
+    #     subscription-token: ${{ secrets.AZ_SUBSCRIPTION_TOKEN }} 
         
     # - name: CIS Results
       # run: echo ${{ steps.container-scan.outputs.scan-report-path }}
