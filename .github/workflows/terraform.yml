@@ -2,8 +2,8 @@ name: 'Terraform'
  
 on:
   push:
-    paths:
-    - 'Infrastructure/Kubernetes/**'
+    # paths:
+    # - 'Infrastructure/Kubernetes/**'
 
 jobs:
   terraform:
