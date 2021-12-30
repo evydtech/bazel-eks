@@ -8,15 +8,15 @@ variable "agent_count" {
 variable "VM_SSH_KEY_PUB" {}
 
 variable "dns_prefix" {
-  default = "k8stest"
+  default = "aks-dev"
 }
 
 variable "cluster_name" {
-  default = "k8stest"
+  default = "aks-dev"
 }
 
 variable "resource_group_name" {
-  default = "azure-k8stest"
+  default = "evyd-dev-aks"
 }
 
 variable "location" {
@@ -24,7 +24,7 @@ variable "location" {
 }
 
 variable "log_analytics_workspace_name" {
-  default = "testLogAnalyticsWorkspaceName"
+  default = "aksDevLogAnalytics"
 }
 
 # refer https://azure.microsoft.com/global-infrastructure/services/?products=monitor for log analytics available regions

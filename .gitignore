@@ -1,3 +1,4 @@
 # Build files 
 bazel-*
-*/.terraform*
+**/.terraform/*
+**/out.plan

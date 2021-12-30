@@ -12,15 +12,15 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "azure-k8stest"
-    storage_account_name = "cs1100320003dd472e1"
-    container_name       = "tfstate"
+    resource_group_name  = "evyd-dev-aks"
+    storage_account_name = "evydterraformstates01"
+    container_name       = "evyd-dev-aks"
     key                  = "codelab.microsoft.tfstate"
   }
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "azure-k8stest"
+  name     = "evyd-dev-aks"
   location = "Southeast Asia"
 }
 
