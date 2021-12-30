@@ -12,7 +12,7 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "evyd-dev-aks"
+    resource_group_name  = "terraform"
     storage_account_name = "evydterraformstates01"
     container_name       = "evyd-dev-aks"
     key                  = "codelab.microsoft.tfstate"
