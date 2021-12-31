@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: bazel-java
-        image: vishesh.azurecr.io/bazel-java
+        image: evydinternalacr.azurecr.io/bazel-java
         ports:
         - containerPort: 80

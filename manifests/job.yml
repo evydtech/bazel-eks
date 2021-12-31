@@ -7,6 +7,6 @@ spec:
     spec:
       containers:
       - name: bazel-java
-        image: vishesh.azurecr.io/bazel-java
+        image: evydinternalacr.azurecr.io/bazel-java
       restartPolicy: Never
   backoffLimit: 3
