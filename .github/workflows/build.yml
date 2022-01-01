@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 env:
-  REGISTRY_NAME: "evydinternalacr"
+  REGISTRY_NAME: "evydcontainers"
   CLUSTER_NAME: "aks-dev"
   CLUSTER_RESOURCE_GROUP: "evyd-dev-aks"
   NAMESPACE: "default"
@@ -47,24 +47,24 @@ jobs:
     - name: Azure Container Registry Auth
       uses: azure/docker-login@v1
       with:
-        login-server: evydinternalacr.azurecr.io
+        login-server: evydcontainers.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
       
     - name: Azure build 
       working-directory: ./image
-      run: docker build -t evydinternalacr.azurecr.io/bazel-java:${{ github.sha }} .
+      run: docker build -t evydcontainers.azurecr.io/bazel-java:${{ github.sha }} .
 
     - name: Container Scanning
       uses: Azure/container-scan@v0
       id: container-scan
       continue-on-error: true
       with:
-       image-name: evydinternalacr.azurecr.io/bazel-java:${{ github.sha }}
+       image-name: evydcontainers.azurecr.io/bazel-java:${{ github.sha }}
 
     - name: Azure Push 
       working-directory: ./image
-      run: docker push evydinternalacr.azurecr.io/bazel-java:${{ github.sha }}
+      run: docker push evydcontainers.azurecr.io/bazel-java:${{ github.sha }}
    
     # - name: Post logs to appinsights
     #   uses: Azure/publish-security-assessments@v0
