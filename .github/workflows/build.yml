@@ -16,6 +16,7 @@ env:
   NAMESPACE: "default"
   APP_NAME: "bazel-java"
   SECRET: "az-secret"
+  SONAR_HOST_URL: "http://sonarqube-evyd.southeastasia.cloudapp.azure.com/"
   # scan-report-path: 'report'
 
 jobs:
@@ -37,12 +38,12 @@ jobs:
         cp Dockerfile image/
         cp bazel-bin/ProjectRunner.jar image/
 
-    - name: SonarCloud Scan
+    - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
 
 
     - name: Azure Container Registry Auth
