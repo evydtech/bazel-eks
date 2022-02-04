@@ -2,7 +2,7 @@ variable "client_id" {}
 variable "client_secret" {}
 
 variable "agent_count" {
-  default = 4
+  default = 0
 }
 
 variable "VM_SSH_KEY_PUB" {}
