@@ -2,7 +2,7 @@ aws_region = "ap-southeast-1"
 azs        = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
 name       = "eks-dev-sg1"
 tags = {
-  env  = "dev"
+  env = "dev"
 }
 kubernetes_version = "1.21"
 fargate_profiles = [
