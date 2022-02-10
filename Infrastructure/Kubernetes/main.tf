@@ -1,98 +1,40 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>2.0"
-    }
-  }
-}
-provider "azurerm" {
-  features {}
-}
+# Fargate node groups example
 
 terraform {
-  backend "azurerm" {
-    resource_group_name  = "terraform"
-    storage_account_name = "evydterraformstates01"
-    container_name       = "evyd-dev-aks"
-    key                  = "codelab.microsoft.tfstate"
-  }
+  required_version = "~> 1.0"
+     backend "s3" {
+       bucket = "terraform-states3"
+       key    = "dev.tfstate"
+       region = "ap-southeast-1"
+   }
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "evyd-dev-aks"
-  location = "Southeast Asia"
+provider "aws" {
+  region = var.aws_region
 }
 
-# Your Terraform code goes here...
-resource "azurerm_resource_group" "k8s" {
-  name     = var.resource_group_name
-  location = var.location
+# vpc
+module "vpc" {
+  source             = "terraform-aws-modules/vpc/aws"
+  version            = "2.63.0"
+  name               = var.name
+  azs                = var.azs
+  cidr               = "10.0.0.0/16"
+  private_subnets    = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  enable_nat_gateway = true
+  single_nat_gateway = true
+  tags               = module.eks.tags.shared
 }
 
-resource "random_id" "log_analytics_workspace_name_suffix" {
-  byte_length = 8
-}
-
-resource "azurerm_log_analytics_workspace" "test" {
-  # The WorkSpace name has to be unique across the whole of azure, not just the current subscription/tenant.
-  name                = "${var.log_analytics_workspace_name}-${random_id.log_analytics_workspace_name_suffix.dec}"
-  location            = var.log_analytics_workspace_location
-  resource_group_name = azurerm_resource_group.k8s.name
-  sku                 = var.log_analytics_workspace_sku
-}
-
-resource "azurerm_log_analytics_solution" "test" {
-  solution_name         = "ContainerInsights"
-  location              = azurerm_log_analytics_workspace.test.location
-  resource_group_name   = azurerm_resource_group.k8s.name
-  workspace_resource_id = azurerm_log_analytics_workspace.test.id
-  workspace_name        = azurerm_log_analytics_workspace.test.name
-
-  plan {
-    publisher = "Microsoft"
-    product   = "OMSGallery/ContainerInsights"
-  }
-}
-
-resource "azurerm_kubernetes_cluster" "k8s" {
-  name                = var.cluster_name
-  location            = azurerm_resource_group.k8s.location
-  resource_group_name = azurerm_resource_group.k8s.name
-  dns_prefix          = var.dns_prefix
-
-  linux_profile {
-    admin_username = "ubuntu"
-
-    ssh_key {
-      key_data = var.VM_SSH_KEY_PUB
-    }
-  }
-
-  default_node_pool {
-    name       = "agentpool"
-    node_count = var.agent_count
-    vm_size    = "standard_d11"
-  }
-
-  service_principal {
-    client_id     = var.client_id
-    client_secret = var.client_secret
-  }
-
-  addon_profile {
-    oms_agent {
-      enabled                    = true
-      log_analytics_workspace_id = azurerm_log_analytics_workspace.test.id
-    }
-  }
-
-  network_profile {
-    load_balancer_sku = "Standard"
-    network_plugin    = "kubenet"
-  }
-
-  tags = {
-    Environment = "Development"
-  }
+# eks
+module "eks" {
+  source              = "Young-ook/eks/aws"
+  name                = var.name
+  tags                = var.tags
+  subnets             = module.vpc.private_subnets
+  kubernetes_version  = var.kubernetes_version
+  managed_node_groups = var.managed_node_groups
+  node_groups         = var.node_groups
+  fargate_profiles    = var.fargate_profiles
 }

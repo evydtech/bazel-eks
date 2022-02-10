@@ -9,13 +9,10 @@ jobs:
   terraform:
     name: 'Terraform'
     env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      TF_VAR_client_id: ${{ secrets.TF_VAR_client_id }}
-      TF_VAR_client_secret: ${{ secrets.TF_VAR_client_secret }}
-      TF_VAR_VM_SSH_KEY_PUB: ${{ secrets.TF_VAR_VM_SSH_KEY_PUB }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TF_ACTION_WORKING_DIR: "./Infrastructure/Kubernetes/"
+      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     runs-on: ubuntu-latest
     
@@ -64,9 +61,6 @@ jobs:
         tf_actions_working_dir: "./Infrastructure/Kubernetes/"
 
 
-    # - name: Terraform Apply
-    #   run: terraform apply -auto-approve
-
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/master'
@@ -75,21 +69,3 @@ jobs:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: "./Infrastructure/Kubernetes/"
-
-    # - run: cd ./Infrastructure/Kubernetes/
-    # - run: echo "$(terraform output -raw kube_config)" > ~/azurek8s; export KUBECONFIG=~/azurek8s
-    # - run: wc ~/azurek8s
-    # - run: kubectl get nodes
-    # - run: kubectl delete deployment java-app
-    # - run: kubectl create deployment java-app --image=vishesh.azurecr.io/bazel-java
-
-
-  # Create image pull secret for ACR
-  # - uses: azure/k8s-create-secret@v1
-  #   with:
-  #     container-registry-url: vishesh.azurecr.io
-  #     container-registry-username: ${{ secrets.ACR_USERNAME }}
-  #     container-registry-password: ${{ secrets.ACR_PASSWORD }}
-  #     secret-name: ${{ env.SECRET }}
-  #     namespace: ${{ env.NAMESPACE }}
-  #     arguments: --force true
