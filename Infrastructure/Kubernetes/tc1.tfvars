@@ -1,6 +1,6 @@
 aws_region = "ap-southeast-1"
 azs        = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
-name       = "eks-dev-sg1"
+name       = "eks-fargate"
 tags = {
   env = "dev"
 }
@@ -11,6 +11,7 @@ fargate_profiles = [
     namespace = "default"
   },
 ]
+
 managed_node_groups = [
   {
     name          = "linodes"
@@ -20,4 +21,3 @@ managed_node_groups = [
     instance_type = "t3.small"
   }
 ]
-
