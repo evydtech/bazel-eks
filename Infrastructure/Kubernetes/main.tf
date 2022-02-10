@@ -1,7 +1,7 @@
 # Fargate node groups example
 
 terraform {
-  required_version = "~> 1.0"
+  required_version = ">= 0.12.9"
   backend "s3" {
     bucket = "terraform-states3"
     key    = "dev.tfstate"
