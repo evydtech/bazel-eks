@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: bazel-java
-        image: evydcontainers.azurecr.io/bazel-java
+        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers:latest
         ports:
         - containerPort: 80
