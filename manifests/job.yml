@@ -7,6 +7,6 @@ spec:
     spec:
       containers:
       - name: bazel-java
-        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers:latest
+        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers
       restartPolicy: Never
   backoffLimit: 3
