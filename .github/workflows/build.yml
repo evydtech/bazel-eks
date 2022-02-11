@@ -53,16 +53,16 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
 
-    - name: Install and configure kubectl
-      run: |
-        VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-        curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
-            --progress-bar \
-            --location \
-            --remote-name
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
-        echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 --decode > kubeconfig.yaml
+    # - name: Install and configure kubectl
+    #   run: |
+    #     VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+    #     curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
+    #         --progress-bar \
+    #         --location \
+    #         --remote-name
+    #     chmod +x kubectl
+    #     sudo mv kubectl /usr/local/bin/
+    #     echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 --decode > kubeconfig.yaml
 
     - name: deploy to cluster
       uses: kodermax/kubectl-aws-eks@master
@@ -73,5 +73,5 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       with:
         # args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        args: kubectl apply -f manifests/job.yml
+        args: apply -f manifests/job.yml
 
