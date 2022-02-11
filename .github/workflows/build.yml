@@ -1,8 +1,7 @@
 name: Release
 
 on:
-  pull_request:
-    branches: [main]
+  push:
 
 env:
   RELEASE_REVISION: "pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}"
