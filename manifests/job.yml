@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: dev-evyd-containers
-        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers:$github.sha
+        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers:$IMAGE_TAG
       restartPolicy: Never
       imagePullSecrets:
       - name: regcred
