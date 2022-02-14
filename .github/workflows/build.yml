@@ -75,6 +75,18 @@ jobs:
     #     # args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG    
     #     args: envsubst < manifests/job.yml | kubectl apply -f - 
 
+    - name: Install and configure kubectl
+        run: |
+        VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+        curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
+            --progress-bar \
+            --location \
+            --remote-name
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+        echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 --decode > kubeconfig.yaml
+
+
     - name: deploy to cluster
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
@@ -82,6 +94,6 @@ jobs:
         ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        echo ${{ secrets.KUBECONFIG }} | base64 --decode > kubeconfig.yaml
+        # echo ${{ secrets.KUBECONFIG }} | base64 --decode > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
         envsubst < manifests/job.yml | kubectl apply -f -
