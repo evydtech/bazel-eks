@@ -64,14 +64,16 @@ jobs:
     #     sudo mv kubectl /usr/local/bin/
     #     echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 --decode > kubeconfig.yaml
 
+    - name: interpolate variables
+      run: envsubst < manifests/job.yml  | tee manifests/job.yml 
+
     - name: deploy to cluster
       uses: kodermax/kubectl-aws-eks@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: envsubst < manifests/job.yml  | tee manifests/job.yml
+        IMAGE_TAG: ${{ github.sha }}     
       with:
         args: apply -f manifests/job.yml
 
