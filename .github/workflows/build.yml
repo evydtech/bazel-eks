@@ -49,8 +49,12 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         # docker build -t evydcontainers.azurecr.io/bazel-java:${{ github.sha }} .
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker build -t $ECR_REPOSITORY .
+        docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/$ECR_REPOSITORY:latest
+
+        # docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        # docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
 
     # - name: Install and configure kubectl
@@ -64,13 +68,13 @@ jobs:
     #     sudo mv kubectl /usr/local/bin/
     #     echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 --decode > kubeconfig.yaml
 
-    - name: interpolate variables
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ github.sha }} 
-      run: envsubst < manifests/job.yml  | tee manifests/job.yml ; echo manifests/job.yml
+    # - name: interpolate variables
+    #   env:
+    #     KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+    #     IMAGE_TAG: ${{ github.sha }} 
+    #   run: envsubst < manifests/job.yml  | tee manifests/job.yml ; echo manifests/job.yml
 
     - name: deploy to cluster
       uses: kodermax/kubectl-aws-eks@master
