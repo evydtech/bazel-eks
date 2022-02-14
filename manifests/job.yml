@@ -6,7 +6,9 @@ spec:
   template:
     spec:
       containers:
-      - name: bazel-java
-        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers
+      - name: dev-evyd-containers
+        image: 850692499868.dkr.ecr.ap-southeast-1.amazonaws.com/dev-evyd-containers:latest
       restartPolicy: Never
+      imagePullSecrets:
+      - name: regcred
   backoffLimit: 3
