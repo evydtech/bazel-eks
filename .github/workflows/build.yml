@@ -76,7 +76,7 @@ jobs:
     #     args: envsubst < manifests/job.yml | kubectl apply -f - 
 
     - name: Install and configure kubectl
-        run: |
+      run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
             --progress-bar \
