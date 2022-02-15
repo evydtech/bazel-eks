@@ -15,9 +15,9 @@ fargate_profiles = [
 managed_node_groups = [
   {
     name          = "linodes"
-    min_size      = 1
-    max_size      = 3
-    desired_size  = 1
+    min_size      = 0
+    max_size      = 0
+    desired_size  = 0
     instance_type = "t3.small"
   }
 ]
